@@ -1,12 +1,10 @@
-# Go Web Application
-
 # TO DO
 
 ## Application Design
 
 Class Scheduler + To Do List + some other features (login in)
 
-## Web Site Design
+## Website Design
 
 Front page + other pages + page flow
 
