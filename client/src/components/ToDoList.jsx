@@ -20,7 +20,7 @@ class ToDoList extends Component {
 
   onChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      task: event.target.value
     });
   };
 
@@ -53,11 +53,7 @@ class ToDoList extends Component {
       if (res.data) {
         this.setState({
           items: res.data.map(item => {
-            let color = "yellow";
-
-            if (item.status) {
-              color = "green";
-            }
+            const color = item.status ? "green" : "yellow";
             return (
               <Card key={item._id} color={color} fluid>
                 <Card.Content>
@@ -67,8 +63,8 @@ class ToDoList extends Component {
 
                   <Card.Meta textAlign="right">
                     <Icon
-                      name="check circle"
                       color="green"
+                      name="check circle"
                       onClick={() => this.updateTask(item._id)}
                     />
                     <span style={{ paddingRight: 10 }}>Done</span>
@@ -79,8 +75,8 @@ class ToDoList extends Component {
                     />
                     <span style={{ paddingRight: 10 }}>Undo</span>
                     <Icon
-                      name="delete"
                       color="red"
+                      name="delete"
                       onClick={() => this.deleteTask(item._id)}
                     />
                     <span style={{ paddingRight: 10 }}>Delete</span>
@@ -133,6 +129,7 @@ class ToDoList extends Component {
         this.getTask();
       });
   };
+
   render() {
     return (
       <div>
