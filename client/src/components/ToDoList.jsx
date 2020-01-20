@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
+import { Card, Header, Form, Input, Icon, Button } from "semantic-ui-react";
 
 const endpoint = "http://localhost:8080";
 
@@ -148,7 +148,7 @@ class ToDoList extends Component {
               fluid
               placeholder="Create Task"
             />
-            {/* <Button >Create Task</Button> */}
+            <Button>Create Task</Button>
           </Form>
         </div>
         <div className="row">
