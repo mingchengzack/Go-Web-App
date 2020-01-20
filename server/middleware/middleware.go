@@ -27,15 +27,15 @@ const dbName = "test"
 // Collection name
 const collName = "todolist"
 
-// Collection object/instance
+// Collection object
 var collection *mongo.Collection
 
-// create connection with mongo db
+// Create connection with mongo db
 func init() {
 	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
 
-	// connect to MongoDB
+	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
@@ -124,7 +124,7 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 	// json.NewEncoder(w).Encode("Task not found")
 }
 
-// get all task from the DB and return it
+// Get all task from the DB and return it
 func getAllTask() []primitive.M {
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	if err != nil {
@@ -134,9 +134,9 @@ func getAllTask() []primitive.M {
 	var results []primitive.M
 	for cur.Next(context.Background()) {
 		var result bson.M
-		e := cur.Decode(&result)
-		if e != nil {
-			log.Fatal(e)
+		err := cur.Decode(&result)
+		if err != nil {
+			log.Fatal(err)
 		}
 		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
 		results = append(results, result)
@@ -162,7 +162,7 @@ func insertOneTask(task models.ToDoList) {
 	fmt.Println("Inserted a Single Record ", insertResult.InsertedID)
 }
 
-// task complete method, update task's status to true
+// Task complete method, update task's status to true
 func taskComplete(task string) {
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
@@ -190,7 +190,7 @@ func undoTask(task string) {
 	fmt.Println("modified count: ", result.ModifiedCount)
 }
 
-// delete one task from the DB, delete by ID
+// Delete one task from the DB, delete by ID
 func deleteOneTask(task string) {
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
@@ -203,7 +203,7 @@ func deleteOneTask(task string) {
 	fmt.Println("Deleted Document", d.DeletedCount)
 }
 
-// delete all the tasks from the DB
+// Delete all the tasks from the DB
 func deleteAllTask() int64 {
 	d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)
 	if err != nil {
