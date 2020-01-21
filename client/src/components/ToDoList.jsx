@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import apis from "../api/api";
 import { Card, Header, Form, Input, Icon, Button } from "semantic-ui-react";
 
 const endpoint = "http://localhost:8080";
@@ -15,7 +16,7 @@ class ToDoList extends Component {
   }
 
   componentDidMount() {
-    this.getTask();
+    this.getAllTasks();
   }
 
   onChange = event => {
@@ -27,29 +28,17 @@ class ToDoList extends Component {
   onSubmit = () => {
     let { task } = this.state;
     if (task) {
-      axios
-        .post(
-          endpoint + "/api/task",
-          {
-            task
-          },
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          }
-        )
-        .then(res => {
-          this.getTask();
-          this.setState({
-            task: ""
-          });
+      apis.createTask({ task }).then(res => {
+        this.getAllTasks();
+        this.setState({
+          task: ""
         });
+      });
     }
   };
 
-  getTask = () => {
-    axios.get(endpoint + "/api/task").then(res => {
+  getAllTasks = () => {
+    apis.getAllTasks().then(res => {
       if (res.data) {
         this.setState({
           items: res.data.map(item => {
@@ -65,13 +54,17 @@ class ToDoList extends Component {
                     <Icon
                       color="green"
                       name="check circle"
-                      onClick={() => this.updateTask(item._id)}
+                      onClick={() =>
+                        this.updateTask(item._id, { status: true })
+                      }
                     />
                     <span style={{ paddingRight: 10 }}>Done</span>
                     <Icon
                       name="undo"
                       color="yellow"
-                      onClick={() => this.undoTask(item._id)}
+                      onClick={() =>
+                        this.updateTask(item._id, { status: false })
+                      }
                     />
                     <span style={{ paddingRight: 10 }}>Undo</span>
                     <Icon
@@ -94,40 +87,16 @@ class ToDoList extends Component {
     });
   };
 
-  updateTask = id => {
-    axios
-      .put(endpoint + "/api/task/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        this.getTask();
-      });
-  };
-
-  undoTask = id => {
-    axios
-      .put(endpoint + "/api/undoTask/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        this.getTask();
-      });
+  updateTask = (id, status) => {
+    apis.updateTask(id, status).then(res => {
+      this.getAllTasks();
+    });
   };
 
   deleteTask = id => {
-    axios
-      .delete(endpoint + "/api/deleteTask/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        this.getTask();
-      });
+    apis.deleteTask(id).then(res => {
+      this.getAllTasks();
+    });
   };
 
   render() {
