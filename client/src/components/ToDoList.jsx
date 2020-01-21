@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 import apis from "../api/api";
 import { Card, Header, Form, Input, Icon, Button } from "semantic-ui-react";
-
-const endpoint = "http://localhost:8080";
 
 class ToDoList extends Component {
   constructor(props) {
@@ -25,10 +22,10 @@ class ToDoList extends Component {
     });
   };
 
-  onSubmit = () => {
+  onSubmit = async () => {
     let { task } = this.state;
     if (task) {
-      apis.createTask({ task }).then(res => {
+      await apis.createTask({ task }).then(res => {
         this.getAllTasks();
         this.setState({
           task: ""
@@ -37,47 +34,11 @@ class ToDoList extends Component {
     }
   };
 
-  getAllTasks = () => {
-    apis.getAllTasks().then(res => {
+  getAllTasks = async () => {
+    await apis.getAllTasks().then(res => {
       if (res.data) {
         this.setState({
-          items: res.data.map(item => {
-            const color = item.status ? "green" : "yellow";
-            return (
-              <Card key={item._id} color={color} fluid>
-                <Card.Content>
-                  <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
-                  </Card.Header>
-
-                  <Card.Meta textAlign="right">
-                    <Icon
-                      color="green"
-                      name="check circle"
-                      onClick={() =>
-                        this.updateTask(item._id, { status: true })
-                      }
-                    />
-                    <span style={{ paddingRight: 10 }}>Done</span>
-                    <Icon
-                      name="undo"
-                      color="yellow"
-                      onClick={() =>
-                        this.updateTask(item._id, { status: false })
-                      }
-                    />
-                    <span style={{ paddingRight: 10 }}>Undo</span>
-                    <Icon
-                      color="red"
-                      name="delete"
-                      onClick={() => this.deleteTask(item._id)}
-                    />
-                    <span style={{ paddingRight: 10 }}>Delete</span>
-                  </Card.Meta>
-                </Card.Content>
-              </Card>
-            );
-          })
+          items: res.data
         });
       } else {
         this.setState({
@@ -87,17 +48,54 @@ class ToDoList extends Component {
     });
   };
 
-  updateTask = (id, status) => {
-    apis.updateTask(id, status).then(res => {
+  updateTask = async (id, status) => {
+    await apis.updateTask(id, status).then(res => {
       this.getAllTasks();
     });
   };
 
-  deleteTask = id => {
-    apis.deleteTask(id).then(res => {
+  deleteTask = async id => {
+    await apis.deleteTask(id).then(res => {
       this.getAllTasks();
     });
   };
+
+  renderItems() {
+    let { items } = this.state;
+    return items.map(item => {
+      const color = item.status ? "green" : "yellow";
+      return (
+        <Card key={item._id} color={color} fluid>
+          <Card.Content>
+            <Card.Header textAlign="left">
+              <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+            </Card.Header>
+
+            <Card.Meta textAlign="right">
+              <Icon
+                color="green"
+                name="check circle"
+                onClick={() => this.updateTask(item._id, { status: true })}
+              />
+              <span style={{ paddingRight: 10 }}>Done</span>
+              <Icon
+                name="undo"
+                color="yellow"
+                onClick={() => this.updateTask(item._id, { status: false })}
+              />
+              <span style={{ paddingRight: 10 }}>Undo</span>
+              <Icon
+                color="red"
+                name="delete"
+                onClick={() => this.deleteTask(item._id)}
+              />
+              <span style={{ paddingRight: 10 }}>Delete</span>
+            </Card.Meta>
+          </Card.Content>
+        </Card>
+      );
+    });
+  }
 
   render() {
     return (
@@ -121,7 +119,7 @@ class ToDoList extends Component {
           </Form>
         </div>
         <div className="row">
-          <Card.Group>{this.state.items}</Card.Group>
+          <Card.Group>{this.renderItems()}</Card.Group>
         </div>
       </div>
     );

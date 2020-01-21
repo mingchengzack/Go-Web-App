@@ -120,7 +120,7 @@ func getAllTasks() []primitive.M {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
+		//fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
 		results = append(results, result)
 
 	}
@@ -156,7 +156,6 @@ func updateTask(task string, status bool) {
 
 // Delete one task from the DB, delete by ID
 func deleteOneTask(task string) {
-	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
 	_, err := collection.DeleteOne(context.Background(), filter)
