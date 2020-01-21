@@ -173,5 +173,6 @@ func deleteAllTask() int64 {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	return d.DeletedCount
 }
