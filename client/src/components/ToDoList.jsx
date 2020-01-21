@@ -49,13 +49,13 @@ class ToDoList extends Component {
   };
 
   updateTask = async (id, status) => {
-    await apis.updateTask(id, status).then(res => {
+    await apis.updateTask(id, status).then(_ => {
       this.getAllTasks();
     });
   };
 
   deleteTask = async id => {
-    await apis.deleteTask(id).then(res => {
+    await apis.deleteTask(id).then(_ => {
       this.getAllTasks();
     });
   };

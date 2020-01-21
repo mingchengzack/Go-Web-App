@@ -2,12 +2,16 @@
 
 ## Application Design
 
-Class Scheduler + To Do List + some other features (login in)
+A custom personal student profile for Tritons (UCSD Students)
+Think ways to make it unique and useful
 
 ## Website Design
 
-Front page + other pages + page flow
+- Nav design
+- Main page
 
-## Refactor Server in Go
+## Expand Go Server
 
-Handle more data type + store class type in MongoDB
+- To Do List (rename)
+- Class
+- Personal Profile (Login in) (may have more info)
