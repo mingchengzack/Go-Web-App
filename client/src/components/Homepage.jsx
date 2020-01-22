@@ -7,7 +7,6 @@ import {
   Grid,
   Header,
   Icon,
-  Image,
   List,
   Menu,
   Responsive,
@@ -67,16 +66,19 @@ class DesktopContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixed: false
+      fixed: false,
+      activeItem: "home"
     };
   }
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
 
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
   render() {
     const { children } = this.props;
-    const { fixed } = this.state;
+    const { fixed, activeItem } = this.state;
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -96,16 +98,28 @@ class DesktopContainer extends Component {
               inverted={!fixed}
               pointing={!fixed}
               secondary={!fixed}
-              size="large"
+              size="huge"
             >
+              <Menu.Item as="a" id="title">
+                TritonLife
+              </Menu.Item>
               <Container>
-                <Menu.Item as="a" header id="title">
-                  TritonLife
-                </Menu.Item>
-                <Menu.Item as="a" active>
+                <Menu.Item
+                  as="a"
+                  name="home"
+                  active={activeItem === "home"}
+                  onClick={this.handleItemClick}
+                >
                   Home
                 </Menu.Item>
-                <Menu.Item as="a">Features</Menu.Item>
+                <Menu.Item
+                  as="a"
+                  name="features"
+                  active={activeItem === "features"}
+                  onClick={this.handleItemClick}
+                >
+                  Features
+                </Menu.Item>
                 <Menu.Item position="right">
                   <Button as="a" inverted={!fixed}>
                     Log in
