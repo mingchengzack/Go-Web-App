@@ -79,8 +79,8 @@ class ToDoList extends Component {
               />
               <span style={{ paddingRight: 10 }}>Done</span>
               <Icon
-                name="undo"
                 color="yellow"
+                name="undo"
                 onClick={() => this.updateTask(item._id, { status: false })}
               />
               <span style={{ paddingRight: 10 }}>Undo</span>

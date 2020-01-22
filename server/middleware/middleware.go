@@ -22,13 +22,16 @@ import (
 const connectionString = "mongodb+srv://admin:11051996Cm!123@cluster0-dgtxy.gcp.mongodb.net/test?retryWrites=true&w=majority"
 
 // Database Name
-const dbName = "test"
+const dbName = "TritonLife"
 
-// Collection name
-const collName = "todolist"
+// usersCollection
+var usersColl *mongo.Collection
 
-// Collection object
-var collection *mongo.Collection
+// classesCollection
+var classesColl *mongo.Collection
+
+// toDoListCollection
+var toDoListColl *mongo.Collection
 
 // Create connection with mongo db
 func init() {
@@ -51,9 +54,12 @@ func init() {
 
 	fmt.Println("Connected to MongoDB!")
 
-	collection = client.Database(dbName).Collection(collName)
+	// Create collections
+	usersColl = client.Database(dbName).Collection("users")
+	classesColl = client.Database(dbName).Collection("classes")
+	toDoListColl = client.Database(dbName).Collection("toDoList")
 
-	fmt.Println("Collection instance created!")
+	fmt.Println("toDoListColl instance created!")
 }
 
 // Handle CORS
@@ -107,7 +113,7 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 
 // Get all task from the DB and return it
 func getAllTasks() []primitive.M {
-	cur, err := collection.Find(context.Background(), bson.D{{}})
+	cur, err := toDoListColl.Find(context.Background(), bson.D{{}})
 
 	if err != nil {
 		log.Fatal(err)
@@ -135,7 +141,7 @@ func getAllTasks() []primitive.M {
 
 // Insert one task in the DB
 func insertOneTask(task models.ToDoList) {
-	_, err := collection.InsertOne(context.Background(), task)
+	_, err := toDoListColl.InsertOne(context.Background(), task)
 
 	if err != nil {
 		log.Fatal(err)
@@ -147,7 +153,7 @@ func updateTask(task string, status bool) {
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
 	update := bson.M{"$set": bson.M{"status": status}}
-	_, err := collection.UpdateOne(context.Background(), filter, update)
+	_, err := toDoListColl.UpdateOne(context.Background(), filter, update)
 
 	if err != nil {
 		log.Fatal(err)
@@ -158,7 +164,7 @@ func updateTask(task string, status bool) {
 func deleteOneTask(task string) {
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
-	_, err := collection.DeleteOne(context.Background(), filter)
+	_, err := toDoListColl.DeleteOne(context.Background(), filter)
 
 	if err != nil {
 		log.Fatal(err)
@@ -167,7 +173,7 @@ func deleteOneTask(task string) {
 
 // Delete all the tasks from the DB
 func deleteAllTask() int64 {
-	d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)
+	d, err := toDoListColl.DeleteMany(context.Background(), bson.D{{}}, nil)
 
 	if err != nil {
 		log.Fatal(err)
