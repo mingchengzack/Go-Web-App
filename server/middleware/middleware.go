@@ -57,7 +57,7 @@ func init() {
 }
 
 // Handle CORS
-func setCORS(w http.ResponseWriter, r *http.Request) {
+func setCORS(w http.ResponseWriter) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -66,14 +66,14 @@ func setCORS(w http.ResponseWriter, r *http.Request) {
 
 // GetAllTasks get all the task route
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
-	setCORS(w, r)
+	setCORS(w)
 	payload := getAllTasks()
 	json.NewEncoder(w).Encode(payload)
 }
 
-// CreateTask create task route
-func CreateTask(w http.ResponseWriter, r *http.Request) {
-	setCORS(w, r)
+// InsertTask create task route
+func InsertTask(w http.ResponseWriter, r *http.Request) {
+	setCORS(w)
 	var task models.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
 	insertOneTask(task)
@@ -82,7 +82,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 
 // UpdateTask update task route
 func UpdateTask(w http.ResponseWriter, r *http.Request) {
-	setCORS(w, r)
+	setCORS(w)
 	params := mux.Vars(r)
 	var task models.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
@@ -92,7 +92,7 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 // DeleteTask delete one task route
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
-	setCORS(w, r)
+	setCORS(w)
 	params := mux.Vars(r)
 	deleteOneTask(params["id"])
 	json.NewEncoder(w).Encode(params["id"])
@@ -100,7 +100,7 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 
 // DeleteAllTask delete all tasks route
 func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
-	setCORS(w, r)
+	setCORS(w)
 	count := deleteAllTask()
 	json.NewEncoder(w).Encode(count)
 }

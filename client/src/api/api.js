@@ -12,14 +12,15 @@ const api = axios.create({
 });
 
 const getAllTasks = () => api.get("/api/getAllTasks");
-const createTask = payload => api.post("/api/createTask", payload);
+const insertTask = payload => api.post("/api/insertTask", payload);
 const updateTask = (id, payload) => api.put("/api/updateTask/" + id, payload);
 const deleteTask = id => api.delete("/api/deleteTask/" + id);
 const deleteAllTasks = () => api.delete("/api/deleteAllTask");
 
+// Exported apis
 const apis = {
   getAllTasks,
-  createTask,
+  insertTask,
   updateTask,
   deleteTask,
   deleteAllTasks

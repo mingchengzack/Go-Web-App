@@ -25,7 +25,7 @@ class ToDoList extends Component {
   onSubmit = async () => {
     let { task } = this.state;
     if (task) {
-      await apis.createTask({ task }).then(res => {
+      await apis.insertTask({ task }).then(_ => {
         this.getAllTasks();
         this.setState({
           task: ""
