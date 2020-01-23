@@ -14,6 +14,7 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
+import Login from "./Login";
 
 import "./Homepage.css";
 
@@ -24,61 +25,75 @@ const getWidth = () => {
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth;
 };
 
+/* Active section
+ */
+const ActiveSection = ({ section }) => {
+  return section === "home" ? (
+    <HomepageInfo />
+  ) : section === "login" ? (
+    <Login />
+  ) : (
+    <HomepageInfo />
+  );
+};
+
 /* Homepage heading
  */
-const HomepageHeading = ({ mobile }) => (
-  <Container text>
-    <Header
-      as="h1"
-      content="Hey!"
-      inverted
-      style={{
-        fontSize: mobile ? "2em" : "4em",
-        fontWeight: "normal",
-        marginBottom: 0,
-        marginTop: mobile ? "1.5em" : "3em"
-      }}
-    />
-    <Header
-      as="h2"
-      content="Do whatever you want when you want to."
-      inverted
-      style={{
-        fontSize: mobile ? "1.5em" : "1.7em",
-        fontWeight: "normal",
-        marginTop: mobile ? "0.5em" : "1.5em"
-      }}
-    />
-    <Button primary size="huge">
-      Get Started
-      <Icon name="right arrow" />
-    </Button>
-  </Container>
-);
+const HomepageInfo = ({ mobile }) => {
+  return (
+    <Container text id="homepageinfo">
+      <Header
+        as="h1"
+        content="Hey!"
+        inverted
+        style={{
+          fontSize: mobile ? "2em" : "4em",
+          fontWeight: "normal",
+          marginBottom: 0,
+          marginTop: mobile ? "1.5em" : "3em"
+        }}
+      />
+      <Header
+        as="h2"
+        content="Do whatever you want when you want to."
+        inverted
+        style={{
+          fontSize: mobile ? "1.5em" : "1.7em",
+          fontWeight: "normal",
+          marginTop: mobile ? "0.5em" : "1.5em"
+        }}
+      />
+      <Button primary size="huge">
+        Get Started
+        <Icon name="right arrow" />
+      </Button>
+    </Container>
+  );
+};
 
-HomepageHeading.propTypes = {
+HomepageInfo.propTypes = {
   mobile: PropTypes.bool
 };
 
 /* Nav menu for desktop
  */
-class DesktopContainer extends Component {
+class DesktopNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fixed: false,
-      activeItem: "home"
+      activeSection: "home"
     };
   }
 
   hideFixedMenu = () => this.setState({ fixed: false });
   showFixedMenu = () => this.setState({ fixed: true });
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleMenuItemClick = (e, { name }) => this.setState({ activeSection: name });
 
   render() {
     const { children } = this.props;
-    const { fixed, activeItem } = this.state;
+    const { fixed, activeSection } = this.state;
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -90,68 +105,77 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 700, padding: "1em 0em" }}
+            style={{ minHeight: 600, padding: "1em 0em" }}
             vertical
           >
             <Menu
-              fixed={fixed ? "top" : null}
+              id="menu"
+              fixed={"top"}
               inverted={!fixed}
               pointing={!fixed}
               secondary={!fixed}
               size="huge"
             >
-              <Menu.Item as="a" id="title">
+              <Menu.Item as="h2" header>
                 TritonLife
               </Menu.Item>
               <Container>
                 <Menu.Item
                   as="a"
                   name="home"
-                  active={activeItem === "home"}
-                  onClick={this.handleItemClick}
+                  active={activeSection === "home"}
+                  onClick={this.handleMenuItemClick}
                 >
                   Home
                 </Menu.Item>
                 <Menu.Item
                   as="a"
                   name="features"
-                  active={activeItem === "features"}
-                  onClick={this.handleItemClick}
+                  active={activeSection === "features"}
+                  onClick={this.handleMenuItemClick}
                 >
                   Features
                 </Menu.Item>
                 <Menu.Item position="right">
-                  <Button as="a" inverted={!fixed}>
+                  <Button
+                    as="a"
+                    name="login"
+                    inverted={!fixed}
+                    primary={fixed}
+                    id="btn"
+                    onClick={this.handleMenuItemClick}
+                  >
                     Log in
                   </Button>
                   <Button
                     as="a"
+                    name="signup"
                     inverted={!fixed}
                     primary={fixed}
-                    style={{ marginLeft: "0.5em" }}
+                    id="btn"
+                    onClick={this.handleMenuItemClick}
                   >
                     Sign Up
                   </Button>
                 </Menu.Item>
               </Container>
             </Menu>
-            <HomepageHeading />
+            <ActiveSection section={activeSection} />
           </Segment>
         </Visibility>
-
         {children}
       </Responsive>
     );
   }
 }
 
-DesktopContainer.propTypes = {
+DesktopNav.propTypes = {
   children: PropTypes.node
 };
 
 /* Nav menu for mobile
  */
-class MobileContainer extends Component {
+class MobileNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -209,7 +233,7 @@ class MobileContainer extends Component {
                 </Menu.Item>
               </Menu>
             </Container>
-            <HomepageHeading mobile />
+            <HomepageInfo mobile />
           </Segment>
 
           {children}
@@ -219,14 +243,14 @@ class MobileContainer extends Component {
   }
 }
 
-MobileContainer.propTypes = {
+MobileNav.propTypes = {
   children: PropTypes.node
 };
 
 const ResponsiveContainer = ({ children }) => (
   <div>
-    <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
+    <DesktopNav>{children}</DesktopNav>
+    <MobileNav>{children}</MobileNav>
   </div>
 );
 

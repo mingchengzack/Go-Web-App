@@ -1,11 +1,11 @@
 #menu {
-  background-color: rgb(33, 46, 65);
+  font-family: "Roboto";
 }
 
-#heading {
-  background-color: rgb(16, 29, 49);
+#headinginfo {
+  font-family: "Roboto";
 }
 
-#title {
-  font-weight: bold;
+#btn {
+  margin-left: 10px;
 }
