@@ -15,6 +15,7 @@ import {
   Visibility
 } from "semantic-ui-react";
 import Login from "./Login";
+import Signup from "./Signup";
 
 import "./Homepage.css";
 
@@ -27,24 +28,26 @@ const getWidth = () => {
 
 /* Active section
  */
-const ActiveSection = ({ section }) => {
+const ActiveSection = ({ section, toSignup, toLogin }) => {
   return section === "home" ? (
-    <HomepageInfo />
+    <HomepageInfo toLogin={toLogin} />
   ) : section === "login" ? (
-    <Login />
+    <Login toSignup={toSignup} />
+  ) : section === "signup" ? (
+    <Signup />
   ) : (
-    <HomepageInfo />
+    <HomepageInfo toLogin={toLogin} />
   );
 };
 
 /* Homepage heading
  */
-const HomepageInfo = ({ mobile }) => {
+const HomepageInfo = ({ mobile, toLogin }) => {
   return (
     <Container text id="homepageinfo">
       <Header
         as="h1"
-        content="Hey!"
+        content="Welcome to TritonLife!"
         inverted
         style={{
           fontSize: mobile ? "2em" : "4em",
@@ -63,7 +66,7 @@ const HomepageInfo = ({ mobile }) => {
           marginTop: mobile ? "0.5em" : "1.5em"
         }}
       />
-      <Button primary size="huge">
+      <Button primary size="huge" onClick={toLogin}>
         Get Started
         <Icon name="right arrow" />
       </Button>
@@ -160,7 +163,11 @@ class DesktopNav extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            <ActiveSection section={activeSection} />
+            <ActiveSection
+              section={activeSection}
+              toLogin={e => this.handleMenuItemClick(e, { name: "login" })}
+              toSignup={e => this.handleMenuItemClick(e, { name: "signup" })}
+            />
           </Segment>
         </Visibility>
         {children}

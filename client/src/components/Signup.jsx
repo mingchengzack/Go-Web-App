@@ -9,12 +9,17 @@ import {
   Segment
 } from "semantic-ui-react";
 
-class Login extends Component {
+const error = {
+  PASSWORD_NO_MATCHED: "hey"
+};
+
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      confirmedPassword: ""
     };
   }
 
@@ -30,9 +35,14 @@ class Login extends Component {
     });
   };
 
+  onConfirmChange = event => {
+    this.setState({
+      confirmedPassword: event.target.value
+    });
+  };
+
   handleLogin = () => {
     const { email, password } = this.state;
-    console.log(password);
   };
 
   render() {
@@ -45,7 +55,7 @@ class Login extends Component {
         >
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color="teal" textAlign="center">
-              Log-in to your account
+              Create an account
             </Header>
             <Form size="large">
               <Segment stacked>
@@ -66,6 +76,15 @@ class Login extends Component {
                   onSubmit={this.handleLogin}
                   onChange={this.onPasswordChange}
                 />
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Confirm your password"
+                  type="password"
+                  onSubmit={this.handleLogin}
+                  onChange={this.onConfirmChange}
+                />
 
                 <Button
                   color="teal"
@@ -73,16 +92,11 @@ class Login extends Component {
                   size="large"
                   onClick={this.handleLogin}
                 >
-                  Login
+                  Create
                 </Button>
               </Segment>
             </Form>
-            <Message>
-              New user?{" "}
-              <Button color="teal" onClick={this.props.toSignup}>
-                Sign Up
-              </Button>
-            </Message>
+            <Message>Preferably use your school email to sign up</Message>
           </Grid.Column>
         </Grid>
       </Container>
@@ -90,4 +104,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Signup;
