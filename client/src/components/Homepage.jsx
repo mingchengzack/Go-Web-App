@@ -28,7 +28,8 @@ const getWidth = () => {
 
 /* Active section
  */
-const ActiveSection = ({ section, toSignup, toLogin }) => {
+const ActiveSection = props => {
+  const { section, toLogin, toSignup } = props;
   return section === "home" ? (
     <HomepageInfo toLogin={toLogin} />
   ) : section === "login" ? (
@@ -40,9 +41,16 @@ const ActiveSection = ({ section, toSignup, toLogin }) => {
   );
 };
 
+ActiveSection.propTypes = {
+  section: PropTypes.string,
+  toLogin: PropTypes.func,
+  toSignup: PropTypes.func
+};
+
 /* Homepage heading
  */
-const HomepageInfo = ({ mobile, toLogin }) => {
+const HomepageInfo = props => {
+  const { mobile, toLogin } = props;
   return (
     <Container text id="homepageinfo">
       <Header
@@ -75,7 +83,8 @@ const HomepageInfo = ({ mobile, toLogin }) => {
 };
 
 HomepageInfo.propTypes = {
-  mobile: PropTypes.bool
+  mobile: PropTypes.bool,
+  toLogin: PropTypes.func
 };
 
 /* Nav menu for desktop
@@ -254,12 +263,15 @@ MobileNav.propTypes = {
   children: PropTypes.node
 };
 
-const ResponsiveContainer = ({ children }) => (
-  <div>
-    <DesktopNav>{children}</DesktopNav>
-    <MobileNav>{children}</MobileNav>
-  </div>
-);
+const ResponsiveContainer = props => {
+  const { children } = props;
+  return (
+    <div>
+      <DesktopNav>{children}</DesktopNav>
+      <MobileNav>{children}</MobileNav>
+    </div>
+  );
+};
 
 ResponsiveContainer.propTypes = {
   children: PropTypes.node

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Container,
@@ -32,7 +33,6 @@ class Login extends Component {
 
   handleLogin = () => {
     const { email, password } = this.state;
-    console.log(password);
   };
 
   render() {
@@ -89,5 +89,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  toSignup: PropTypes.func
+};
 
 export default Login;
