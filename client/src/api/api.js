@@ -24,6 +24,8 @@ const deleteAllTasks = () => api.delete("/api/deleteAllTask");
 
 // Exported apis
 const apis = {
+  signup,
+  login,
   getAllTasks,
   insertTask,
   updateTask,

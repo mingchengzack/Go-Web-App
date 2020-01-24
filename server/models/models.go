@@ -4,7 +4,7 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 // User Struct
 type User struct {
-	Name     string
+	Name     string `json:"name,omitempty"`
 	SID      string `json:"sid,omitempty"`
 	Year     string `json:"year,omitempty"`
 	Email    string

@@ -42,8 +42,15 @@ class Signup extends Component {
     });
   };
 
-  handleLogin = () => {
-    const { email, password } = this.state;
+  handleSignup = async () => {
+    const { email, password, confirmedPassword } = this.state;
+
+    // Check confirmed password
+
+    // Send sign up request
+    await apis.signup({ email, password }).then(res => {
+      console.log(res);
+    });
   };
 
   render() {
@@ -65,7 +72,7 @@ class Signup extends Component {
                   icon="user"
                   iconPosition="left"
                   placeholder="Email address"
-                  onSubmit={this.handleLogin}
+                  onSubmit={this.handleSignup}
                   onChange={this.onEmailChange}
                 />
                 <Form.Input
@@ -74,7 +81,7 @@ class Signup extends Component {
                   iconPosition="left"
                   placeholder="Password"
                   type="password"
-                  onSubmit={this.handleLogin}
+                  onSubmit={this.handleSignup}
                   onChange={this.onPasswordChange}
                 />
                 <Form.Input
@@ -83,7 +90,7 @@ class Signup extends Component {
                   iconPosition="left"
                   placeholder="Confirm your password"
                   type="password"
-                  onSubmit={this.handleLogin}
+                  onSubmit={this.handleSignup}
                   onChange={this.onConfirmChange}
                 />
 
@@ -91,7 +98,7 @@ class Signup extends Component {
                   color="teal"
                   fluid
                   size="large"
-                  onClick={this.handleLogin}
+                  onClick={this.handleSignup}
                 >
                   Create
                 </Button>

@@ -59,7 +59,7 @@ func init() {
 	classesColl = client.Database(dbName).Collection("classes")
 	toDoListColl = client.Database(dbName).Collection("toDoList")
 
-	fmt.Println("toDoListColl instance created!")
+	fmt.Println("Collection instance created!")
 }
 
 // Handle CORS
@@ -74,10 +74,34 @@ func setCORS(w http.ResponseWriter) {
  */
 
 // LoginUser try to log in a user
-func LoginUser(w http.ResponseWriter, r *http.Request) {}
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	setCORS(w)
+}
 
 // SignupUser try to sign up a user
-func SignupUser(w http.ResponseWriter, r *http.Request) {}
+func SignupUser(w http.ResponseWriter, r *http.Request) {
+	setCORS(w)
+	var user models.User
+	_ = json.NewDecoder(r.Body).Decode(&user)
+	ok, id := signupUser(user)
+	result := bson.M{"ok": ok, "_id": id}
+	json.NewEncoder(w).Encode(result)
+}
+
+// try to sign up a user
+func signupUser(user models.User) (bool, interface{}) {
+	var ok bool = true
+
+	// Check if user already existed in our database
+
+	result, err := usersColl.InsertOne(context.Background(), user)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return ok, result.InsertedID
+}
 
 /* ToDoList http request handler
  */
