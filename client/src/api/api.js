@@ -13,7 +13,8 @@ const api = axios.create({
 
 // User apis
 const signup = payload => api.post("/api/signup", payload);
-const login = id => api.get("/api/login/" + id);
+const login = (email, password) =>
+  api.get("/api/login/" + email + "/" + password);
 
 // To Do List apis
 const getAllTasks = () => api.get("/api/getAllTasks");

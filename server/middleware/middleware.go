@@ -76,6 +76,30 @@ func setCORS(w http.ResponseWriter) {
 // LoginUser try to log in a user
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	setCORS(w)
+	params := mux.Vars(r)
+	err := loginUser(params["email"], params["password"])
+	json.NewEncoder(w).Encode(err)
+}
+
+// Try to log in a user
+func loginUser(email string, password string) string {
+	filter := bson.M{"email": email}
+	findResult := usersColl.FindOne(context.Background(), filter)
+
+	// Email doesn't existed
+	if findResult.Err() == mongo.ErrNoDocuments {
+		return "email"
+	}
+
+	// Check if password matches
+	var user models.User
+	findResult.Decode(&user)
+	if user.Password != password {
+		return "password"
+	}
+
+	// Login success
+	return "success"
 }
 
 // SignupUser try to sign up a user
@@ -83,24 +107,28 @@ func SignupUser(w http.ResponseWriter, r *http.Request) {
 	setCORS(w)
 	var user models.User
 	_ = json.NewDecoder(r.Body).Decode(&user)
-	ok, id := signupUser(user)
-	result := bson.M{"ok": ok, "_id": id}
-	json.NewEncoder(w).Encode(result)
+	ok := signupUser(user)
+	json.NewEncoder(w).Encode(ok)
 }
 
-// try to sign up a user
-func signupUser(user models.User) (bool, interface{}) {
-	var ok bool = true
-
+// Try to sign up a user
+func signupUser(user models.User) bool {
 	// Check if user already existed in our database
+	filter := bson.M{"email": user.Email}
+	findResult := usersColl.FindOne(context.Background(), filter)
 
-	result, err := usersColl.InsertOne(context.Background(), user)
+	// Email already existed
+	if findResult.Err() != mongo.ErrNoDocuments {
+		return false
+	}
+
+	_, err := usersColl.InsertOne(context.Background(), user)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return ok, result.InsertedID
+	return true
 }
 
 /* ToDoList http request handler

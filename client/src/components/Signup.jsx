@@ -11,7 +11,9 @@ import {
 import apis from "../api/api";
 
 const ERROR = {
-  PASSWORD_NO_MATCHED: "hey"
+  PASSWORD_NO_MATCHED: "",
+  EMAIL_EXISTED:
+    "You can only sign up for an account once with a given email address."
 };
 
 class Signup extends Component {
@@ -20,7 +22,8 @@ class Signup extends Component {
     this.state = {
       email: "",
       password: "",
-      confirmedPassword: ""
+      confirmedPassword: "",
+      error: false
     };
   }
 
@@ -45,15 +48,35 @@ class Signup extends Component {
   handleSignup = async () => {
     const { email, password, confirmedPassword } = this.state;
 
+    // Check valid address and password
+
+    // Empty email or empty password
+    if (email === "" || password === "") {
+      return;
+    }
+
     // Check confirmed password
 
     // Send sign up request
     await apis.signup({ email, password }).then(res => {
-      console.log(res);
+      const ok = res.data;
+
+      if (ok) {
+        // Sign up success
+        this.setState({ error: false });
+      } else {
+        // Sign up failed
+        this.setState({ error: true });
+      }
     });
   };
 
   render() {
+    const errorMessage = this.state.error ? (
+      <Message error content={ERROR.EMAIL_EXISTED} />
+    ) : (
+      <Message hidden></Message>
+    );
     return (
       <Container>
         <Grid
@@ -65,7 +88,7 @@ class Signup extends Component {
             <Header as="h2" color="teal" textAlign="center">
               Create an account
             </Header>
-            <Form size="large">
+            <Form size="large" error>
               <Segment stacked>
                 <Form.Input
                   fluid
@@ -102,6 +125,7 @@ class Signup extends Component {
                 >
                   Create
                 </Button>
+                {errorMessage}
               </Segment>
             </Form>
             <Message>Preferably use your school email to sign up</Message>

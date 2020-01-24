@@ -9,13 +9,20 @@ import {
   Message,
   Segment
 } from "semantic-ui-react";
+import apis from "../api/api";
+
+const ERROR = {
+  INCORRECT_PASSWORD: "Incorrect assword",
+  EMAIL_NOT_EXISTED: "Email does not exist"
+};
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      error: ""
     };
   }
 
@@ -31,11 +38,32 @@ class Login extends Component {
     });
   };
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { email, password } = this.state;
+
+    // Check valid address and password
+
+    // Empty email or empty password
+    if (email === "" || password === "") {
+      return;
+    }
+
+    // Send login up request
+    await apis.login(email, password).then(res => {
+      const error = res.data;
+      this.setState({ error });
+    });
   };
 
   render() {
+    const errorMessage =
+      this.state.error === "email" ? (
+        <Message error content={ERROR.EMAIL_NOT_EXISTED} />
+      ) : this.state.error == "password" ? (
+        <Message error content={ERROR.INCORRECT_PASSWORD} />
+      ) : (
+        <Message hidden></Message>
+      );
     return (
       <Container>
         <Grid
@@ -47,7 +75,7 @@ class Login extends Component {
             <Header as="h2" color="teal" textAlign="center">
               Log in to your account
             </Header>
-            <Form size="large">
+            <Form size="large" error>
               <Segment stacked>
                 <Form.Input
                   fluid
@@ -75,6 +103,7 @@ class Login extends Component {
                 >
                   Login
                 </Button>
+                {errorMessage}
               </Segment>
             </Form>
             <Message>
