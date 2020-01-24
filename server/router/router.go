@@ -12,6 +12,8 @@ func Router() *mux.Router {
 
 	/* Methods to handle User data
 	 */
+	router.HandleFunc("/api/login/{id}", middleware.LoginUser).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/signup", middleware.SignupUser).Methods("POST", "OPTIONS")
 
 	/* Methods to handle Class data
 	 */

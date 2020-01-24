@@ -45,7 +45,7 @@ class Login extends Component {
         >
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color="teal" textAlign="center">
-              Log-in to your account
+              Log in to your account
             </Header>
             <Form size="large">
               <Segment stacked>
@@ -53,7 +53,7 @@ class Login extends Component {
                   fluid
                   icon="user"
                   iconPosition="left"
-                  placeholder="E-mail address"
+                  placeholder="Email address"
                   onSubmit={this.handleLogin}
                   onChange={this.onEmailChange}
                 />

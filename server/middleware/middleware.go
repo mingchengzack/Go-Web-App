@@ -70,6 +70,18 @@ func setCORS(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }
 
+/* User http request handler
+ */
+
+// LoginUser try to log in a user
+func LoginUser(w http.ResponseWriter, r *http.Request) {}
+
+// SignupUser try to sign up a user
+func SignupUser(w http.ResponseWriter, r *http.Request) {}
+
+/* ToDoList http request handler
+ */
+
 // GetAllTasks get all the task route
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	setCORS(w)

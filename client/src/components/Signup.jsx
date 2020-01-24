@@ -8,8 +8,9 @@ import {
   Message,
   Segment
 } from "semantic-ui-react";
+import apis from "../api/api";
 
-const error = {
+const ERROR = {
   PASSWORD_NO_MATCHED: "hey"
 };
 
@@ -63,7 +64,7 @@ class Signup extends Component {
                   fluid
                   icon="user"
                   iconPosition="left"
-                  placeholder="E-mail address"
+                  placeholder="Email address"
                   onSubmit={this.handleLogin}
                   onChange={this.onEmailChange}
                 />

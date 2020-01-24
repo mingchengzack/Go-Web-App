@@ -52,7 +52,7 @@ ActiveSection.propTypes = {
 const HomepageInfo = props => {
   const { mobile, toLogin } = props;
   return (
-    <Container text id="homepageinfo">
+    <Container text>
       <Header
         as="h1"
         content="Welcome to TritonLife!"
