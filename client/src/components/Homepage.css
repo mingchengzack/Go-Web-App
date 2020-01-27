@@ -1,9 +1,19 @@
-#menu {
-  font-family: "Roboto";
+#nav {
+  background-color: #fcd80b;
 }
 
-#headinginfo {
+#menu {
   font-family: "Roboto";
+  background-color: #213b68;
+}
+
+#blue-white {
+  background: #00609c;
+  color: white;
+}
+
+#blue-text {
+  color: #00609c;
 }
 
 #btn {

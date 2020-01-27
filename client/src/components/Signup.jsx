@@ -9,6 +9,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import apis from "../api/api";
+import "./Homepage.css";
 
 const ERROR = {
   PASSWORD_NO_MATCHED: "",
@@ -85,11 +86,12 @@ class Signup extends Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
+            <Header as="h2" id="blue-text" textAlign="center">
               Create an account
             </Header>
             <Form size="large" error>
               <Segment stacked>
+                {errorMessage}
                 <Form.Input
                   fluid
                   icon="user"
@@ -118,14 +120,13 @@ class Signup extends Component {
                 />
 
                 <Button
-                  color="teal"
+                  id="blue-white"
                   fluid
                   size="large"
                   onClick={this.handleSignup}
                 >
                   Create
                 </Button>
-                {errorMessage}
               </Segment>
             </Form>
             <Message>Preferably use your school email to sign up</Message>

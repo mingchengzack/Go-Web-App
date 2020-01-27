@@ -74,7 +74,7 @@ const HomepageInfo = props => {
           marginTop: mobile ? "0.5em" : "1.5em"
         }}
       />
-      <Button primary size="huge" onClick={toLogin}>
+      <Button primary size="huge" onClick={toLogin} id="blue-white">
         Get Started
         <Icon name="right arrow" />
       </Button>
@@ -93,39 +93,32 @@ class DesktopNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixed: false,
       activeSection: "home"
     };
   }
-
-  hideFixedMenu = () => this.setState({ fixed: false });
-  showFixedMenu = () => this.setState({ fixed: true });
 
   handleMenuItemClick = (e, { name }) => this.setState({ activeSection: name });
 
   render() {
     const { children } = this.props;
-    const { fixed, activeSection } = this.state;
+    const { activeSection } = this.state;
 
     return (
       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
-        >
+        <Visibility once={false}>
           <Segment
             inverted
             textAlign="center"
             style={{ minHeight: 600, padding: "1em 0em" }}
             vertical
+            id="nav"
           >
             <Menu
               id="menu"
               fixed={"top"}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
+              inverted
+              pointing
+              secondary
               size="huge"
             >
               <Menu.Item as="h2" header>
@@ -152,8 +145,7 @@ class DesktopNav extends Component {
                   <Button
                     as="a"
                     name="login"
-                    inverted={!fixed}
-                    primary={fixed}
+                    inverted
                     id="btn"
                     onClick={this.handleMenuItemClick}
                   >
@@ -162,8 +154,7 @@ class DesktopNav extends Component {
                   <Button
                     as="a"
                     name="signup"
-                    inverted={!fixed}
-                    primary={fixed}
+                    inverted
                     id="btn"
                     onClick={this.handleMenuItemClick}
                   >

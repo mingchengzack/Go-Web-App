@@ -10,6 +10,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import apis from "../api/api";
+import "./Homepage.css";
 
 const ERROR = {
   INCORRECT_PASSWORD: "Incorrect assword",
@@ -59,7 +60,7 @@ class Login extends Component {
     const errorMessage =
       this.state.error === "email" ? (
         <Message error content={ERROR.EMAIL_NOT_EXISTED} />
-      ) : this.state.error == "password" ? (
+      ) : this.state.error === "password" ? (
         <Message error content={ERROR.INCORRECT_PASSWORD} />
       ) : (
         <Message hidden></Message>
@@ -72,11 +73,12 @@ class Login extends Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
+            <Header as="h2" id="blue-text" textAlign="center">
               Log in to your account
             </Header>
             <Form size="large" error>
               <Segment stacked>
+                {errorMessage}
                 <Form.Input
                   fluid
                   icon="user"
@@ -96,19 +98,18 @@ class Login extends Component {
                 />
 
                 <Button
-                  color="teal"
+                  id="blue-white"
                   fluid
                   size="large"
                   onClick={this.handleLogin}
                 >
                   Login
                 </Button>
-                {errorMessage}
               </Segment>
             </Form>
             <Message>
               New user?{" "}
-              <Button color="teal" onClick={this.props.toSignup}>
+              <Button id="blue-white" onClick={this.props.toSignup}>
                 Sign Up
               </Button>
             </Message>
