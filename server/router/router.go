@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/mingchengzack/Go-Web-App/server/middleware"
+	"github.com/mingchengzack/Triton-Life/server/middleware"
 )
 
 // Router is exported and used in main.go
