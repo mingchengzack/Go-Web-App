@@ -9,7 +9,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import apis from "../api/api";
-import "./Homepage.css";
+import "./Home.css";
 
 const ERROR = {
   PASSWORD_NO_MATCHED: "",
@@ -113,7 +113,7 @@ class Signup extends Component {
                   fluid
                   icon="lock"
                   iconPosition="left"
-                  placeholder="Confirm your password"
+                  placeholder="Confirm Password"
                   type="password"
                   onSubmit={this.handleSignup}
                   onChange={this.onConfirmChange}

@@ -10,7 +10,7 @@ import {
   Segment
 } from "semantic-ui-react";
 import apis from "../api/api";
-import "./Homepage.css";
+import "./Home.css";
 
 const ERROR = {
   INCORRECT_PASSWORD: "Incorrect assword",

@@ -1,6 +1,15 @@
 import React, { Component } from "react";
+import FadeIn from "react-fade-in";
+import {
+  Container,
+  Card,
+  Header,
+  Form,
+  Input,
+  Icon,
+  Button
+} from "semantic-ui-react";
 import apis from "../api/api";
-import { Card, Header, Form, Input, Icon, Button } from "semantic-ui-react";
 
 class ToDoList extends Component {
   constructor(props) {
@@ -67,30 +76,32 @@ class ToDoList extends Component {
       return (
         <Card key={item._id} color={color} fluid>
           <Card.Content>
-            <Card.Header textAlign="left">
-              <div style={{ wordWrap: "break-word" }}>{item.task}</div>
-            </Card.Header>
+            <FadeIn>
+              <Card.Header textAlign="left">
+                <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+              </Card.Header>
 
-            <Card.Meta textAlign="right">
-              <Icon
-                color="green"
-                name="check circle"
-                onClick={() => this.updateTask(item._id, { status: true })}
-              />
-              <span style={{ paddingRight: 10 }}>Done</span>
-              <Icon
-                color="yellow"
-                name="undo"
-                onClick={() => this.updateTask(item._id, { status: false })}
-              />
-              <span style={{ paddingRight: 10 }}>Undo</span>
-              <Icon
-                color="red"
-                name="delete"
-                onClick={() => this.deleteTask(item._id)}
-              />
-              <span style={{ paddingRight: 10 }}>Delete</span>
-            </Card.Meta>
+              <Card.Meta textAlign="right">
+                <Icon
+                  color="green"
+                  name="check circle"
+                  onClick={() => this.updateTask(item._id, { status: true })}
+                />
+                <span style={{ paddingRight: 10 }}>Done</span>
+                <Icon
+                  color="yellow"
+                  name="undo"
+                  onClick={() => this.updateTask(item._id, { status: false })}
+                />
+                <span style={{ paddingRight: 10 }}>Undo</span>
+                <Icon
+                  color="red"
+                  name="delete"
+                  onClick={() => this.deleteTask(item._id)}
+                />
+                <span style={{ paddingRight: 10 }}>Delete</span>
+              </Card.Meta>
+            </FadeIn>
           </Card.Content>
         </Card>
       );
@@ -99,7 +110,7 @@ class ToDoList extends Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <div className="row">
           <Header className="header" as="h2">
             TO DO LIST
@@ -121,7 +132,7 @@ class ToDoList extends Component {
         <div className="row">
           <Card.Group>{this.renderItems()}</Card.Group>
         </div>
-      </div>
+      </Container>
     );
   }
 }

@@ -17,7 +17,7 @@ import {
 import Login from "./Login";
 import Signup from "./Signup";
 
-import "./Homepage.css";
+import "./Home.css";
 
 // Get width for window user or mobile user
 const getWidth = () => {
@@ -268,7 +268,7 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-const Homepage = () => (
+const Home = () => (
   <ResponsiveContainer>
     <Segment style={{ padding: "8em 0em" }} vertical>
       <Grid container stackable verticalAlign="middle">
@@ -373,4 +373,4 @@ const Homepage = () => (
   </ResponsiveContainer>
 );
 
-export default Homepage;
+export default Home;
