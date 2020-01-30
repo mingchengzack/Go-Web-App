@@ -13,7 +13,7 @@ import apis from "../api/api";
 import "./Home.css";
 
 const ERROR = {
-  INCORRECT_PASSWORD: "Incorrect assword",
+  INCORRECT_PASSWORD: "Incorrect password",
   EMAIL_NOT_EXISTED: "Email does not exist"
 };
 
@@ -53,6 +53,14 @@ class Login extends Component {
     await apis.login(email, password).then(res => {
       const error = res.data;
       this.setState({ error });
+
+      // Login success
+      if (
+        error !== ERROR.EMAIL_NOT_EXISTED &&
+        error !== ERROR.INCORRECT_PASSWORD
+      ) {
+        this.props.auth();
+      }
     });
   };
 

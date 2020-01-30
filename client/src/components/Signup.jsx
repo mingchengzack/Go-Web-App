@@ -65,6 +65,7 @@ class Signup extends Component {
       if (ok) {
         // Sign up success
         this.setState({ error: false });
+        this.props.auth();
       } else {
         // Sign up failed
         this.setState({ error: true });
@@ -129,7 +130,12 @@ class Signup extends Component {
                 </Button>
               </Segment>
             </Form>
-            <Message>Preferably use your school email to sign up</Message>
+            <Message>
+              Already has an account?{" "}
+              <Button id="blue-white" onClick={this.props.toLogin}>
+                Log in
+              </Button>
+            </Message>
           </Grid.Column>
         </Grid>
       </Container>

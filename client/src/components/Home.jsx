@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { Route, Redirect } from "react-router-dom";
 import {
   Button,
   Container,
@@ -29,13 +30,41 @@ const getWidth = () => {
 /* Active section
  */
 const ActiveSection = props => {
+  const [isLogin, setLogin] = useState(false);
+
+  // Authentication handle
+  const Auth = () => {
+    setLogin(true);
+  };
+
+  // Handle Login direct
+  const LoginRedirect = ({ children }) => {
+    return (
+      <Route
+        render={() =>
+          !isLogin ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/user"
+              }}
+            />
+          )
+        }
+      />
+    );
+  };
+
   const { section, toLogin, toSignup } = props;
   return section === "home" ? (
     <HomepageInfo toLogin={toLogin} />
   ) : section === "login" ? (
-    <Login toSignup={toSignup} />
+    <LoginRedirect>
+      <Login toSignup={toSignup} auth={Auth} />
+    </LoginRedirect>
   ) : section === "signup" ? (
-    <Signup />
+    <Signup toLogin={toLogin} auth={Auth} />
   ) : (
     <HomepageInfo toLogin={toLogin} />
   );

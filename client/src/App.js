@@ -1,15 +1,19 @@
 import React from "react";
 import "./App.css";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import ToDoList from "./components/ToDoList";
 import Homepage from "./components/Home";
+import User from "./components/User";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Homepage}></Route>
-        <Route exact path="/user" component={ToDoList}></Route>
+        <Route exact path="/">
+          <Homepage />
+        </Route>
+        <Route exact path="/user">
+          <User />
+        </Route>
       </Switch>
     </Router>
   );
