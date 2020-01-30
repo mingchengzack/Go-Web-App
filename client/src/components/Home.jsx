@@ -109,7 +109,7 @@ class DesktopNav extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 600, padding: "1em 0em" }}
+            style={{ minHeight: 550, padding: "1em 0em" }}
             vertical
             id="nav"
           >

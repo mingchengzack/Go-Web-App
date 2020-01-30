@@ -95,7 +95,7 @@ class Signup extends Component {
         {this.renderLogin()}
         <Grid
           textAlign="center"
-          style={{ height: "600px" }}
+          style={{ height: "550px", paddingTop: "52px" }}
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
