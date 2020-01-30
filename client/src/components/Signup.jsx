@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import {
   Button,
   Container,
@@ -13,14 +14,14 @@ import "./Home.css";
 
 const ERROR = {
   PASSWORD_NO_MATCHED: "",
-  EMAIL_EXISTED:
-    "You can only sign up for an account once with a given email address."
+  EMAIL_EXISTED: "An account with this email address already exists"
 };
 
 class Signup extends Component {
   constructor() {
     super();
     this.state = {
+      isLogin: false,
       email: "",
       password: "",
       confirmedPassword: "",
@@ -66,11 +67,18 @@ class Signup extends Component {
         // Sign up success
         this.setState({ error: false });
         this.props.auth();
+        this.setState({ isLogin: true });
       } else {
         // Sign up failed
         this.setState({ error: true });
       }
     });
+  };
+
+  renderLogin = () => {
+    if (this.state.isLogin) {
+      return <Redirect to="/user" />;
+    }
   };
 
   render() {
@@ -81,6 +89,7 @@ class Signup extends Component {
     );
     return (
       <Container>
+        {this.renderLogin()}
         <Grid
           textAlign="center"
           style={{ height: "600px" }}

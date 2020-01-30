@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -21,6 +22,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLogin: false,
       email: "",
       password: "",
       error: ""
@@ -52,16 +54,23 @@ class Login extends Component {
     // Send login up request
     await apis.login(email, password).then(res => {
       const error = res.data;
-      this.setState({ error });
-
       // Login success
       if (
         error !== ERROR.EMAIL_NOT_EXISTED &&
         error !== ERROR.INCORRECT_PASSWORD
       ) {
         this.props.auth();
+        this.setState({ isLogin: true });
       }
+
+      this.setState({ error });
     });
+  };
+
+  renderLogin = () => {
+    if (this.state.isLogin) {
+      return <Redirect to="/user" />;
+    }
   };
 
   render() {
@@ -75,6 +84,7 @@ class Login extends Component {
       );
     return (
       <Container>
+        {this.renderLogin()}
         <Grid
           textAlign="center"
           style={{ height: "600px" }}
@@ -104,7 +114,6 @@ class Login extends Component {
                   onSubmit={this.handleLogin}
                   onChange={this.onPasswordChange}
                 />
-
                 <Button
                   id="blue-white"
                   fluid

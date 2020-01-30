@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Component, useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { Component } from "react";
 import {
   Button,
   Container,
@@ -30,41 +29,13 @@ const getWidth = () => {
 /* Active section
  */
 const ActiveSection = props => {
-  const [isLogin, setLogin] = useState(false);
-
-  // Authentication handle
-  const Auth = () => {
-    setLogin(true);
-  };
-
-  // Handle Login direct
-  const LoginRedirect = ({ children }) => {
-    return (
-      <Route
-        render={() =>
-          !isLogin ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/user"
-              }}
-            />
-          )
-        }
-      />
-    );
-  };
-
-  const { section, toLogin, toSignup } = props;
+  const { section, toLogin, toSignup, auth } = props;
   return section === "home" ? (
     <HomepageInfo toLogin={toLogin} />
   ) : section === "login" ? (
-    <LoginRedirect>
-      <Login toSignup={toSignup} auth={Auth} />
-    </LoginRedirect>
+    <Login toSignup={toSignup} auth={auth} />
   ) : section === "signup" ? (
-    <Signup toLogin={toLogin} auth={Auth} />
+    <Signup toLogin={toLogin} auth={auth} />
   ) : (
     <HomepageInfo toLogin={toLogin} />
   );
@@ -129,7 +100,7 @@ class DesktopNav extends Component {
   handleMenuItemClick = (e, { name }) => this.setState({ activeSection: name });
 
   render() {
-    const { children } = this.props;
+    const { children, auth } = this.props;
     const { activeSection } = this.state;
 
     return (
@@ -196,6 +167,7 @@ class DesktopNav extends Component {
               section={activeSection}
               toLogin={e => this.handleMenuItemClick(e, { name: "login" })}
               toSignup={e => this.handleMenuItemClick(e, { name: "signup" })}
+              auth={auth}
             />
           </Segment>
         </Visibility>
@@ -284,11 +256,11 @@ MobileNav.propTypes = {
 };
 
 const ResponsiveContainer = props => {
-  const { children } = props;
+  const { children, auth } = props;
   return (
     <div>
-      <DesktopNav>{children}</DesktopNav>
-      <MobileNav>{children}</MobileNav>
+      <DesktopNav auth={auth}>{children}</DesktopNav>
+      <MobileNav auth={auth}>{children}</MobileNav>
     </div>
   );
 };
@@ -297,109 +269,113 @@ ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
 
-const Home = () => (
-  <ResponsiveContainer>
-    <Segment style={{ padding: "8em 0em" }} vertical>
-      <Grid container stackable verticalAlign="middle">
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <Header as="h3" style={{ fontSize: "2em" }}>
-              We Help Companies and Companions
-            </Header>
-            <p style={{ fontSize: "1.33em" }}>
-              We can give your company superpowers to do things that they never
-              thought possible. Let us delight your customers and empower your
-              needs... through pure data analytics.
-            </p>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column textAlign="center">
-            <Button size="huge">Check Them Out</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
-
-    <Segment style={{ padding: "0em" }} vertical>
-      <Grid celled="internally" columns="equal" stackable>
-        <Grid.Row textAlign="center">
-          <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
-            <Header as="h3" style={{ fontSize: "2em" }}>
-              "What a Company"
-            </Header>
-            <p style={{ fontSize: "1.33em" }}>
-              That is what they all say about us
-            </p>
-          </Grid.Column>
-          <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
-            <Header as="h3" style={{ fontSize: "2em" }}>
-              "I shouldn't have gone with their competitor."
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
-
-    <Segment style={{ padding: "8em 0em" }} vertical>
-      <Container text>
-        <Header as="h3" style={{ fontSize: "2em" }}>
-          Breaking The Grid, Grabs Your Attention
-        </Header>
-        <p style={{ fontSize: "1.33em" }}>
-          Instead of focusing on content creation and hard work, we have learned
-          how to master the art of doing nothing by providing massive amounts of
-          whitespace and generic content that can seem massive, monolithic and
-          worth your attention.
-        </p>
-        <Button as="a" size="large">
-          Read More
-        </Button>
-
-        <Divider
-          as="h4"
-          className="header"
-          horizontal
-          style={{ margin: "3em 0em", textTransform: "uppercase" }}
-        >
-          <a href="#">Case Studies</a>
-        </Divider>
-
-        <Header as="h3" style={{ fontSize: "2em" }}>
-          Did We Tell You About Our Bananas?
-        </Header>
-        <p style={{ fontSize: "1.33em" }}>
-          Yes I know you probably disregarded the earlier boasts as non-sequitur
-          filler content, but it's really true. It took years of gene splicing
-          and combinatory DNA research, but our bananas can really dance.
-        </p>
-        <Button as="a" size="large">
-          I'm Still Quite Interested
-        </Button>
-      </Container>
-    </Segment>
-
-    <Segment inverted vertical style={{ padding: "5em 0em" }}>
-      <Container>
-        <Grid divided inverted stackable>
+const Home = props => {
+  const { auth } = props;
+  return (
+    <ResponsiveContainer auth={auth}>
+      <Segment style={{ padding: "8em 0em" }} vertical>
+        <Grid container stackable verticalAlign="middle">
           <Grid.Row>
-            <Grid.Column width={3}>
-              <Header inverted as="h4" content="About" />
-              <List link inverted>
-                <List.Item as="a">Sitemap</List.Item>
-              </List>
+            <Grid.Column width={8}>
+              <Header as="h3" style={{ fontSize: "2em" }}>
+                We Help Companies and Companions
+              </Header>
+              <p style={{ fontSize: "1.33em" }}>
+                We can give your company superpowers to do things that they
+                never thought possible. Let us delight your customers and
+                empower your needs... through pure data analytics.
+              </p>
             </Grid.Column>
-            <Grid.Column width={3}>
-              <Header inverted as="h4" content="Services" />
-              <List link inverted>
-                <List.Item as="a">Banana Pre-Order</List.Item>
-              </List>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column textAlign="center">
+              <Button size="huge">Check Them Out</Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Container>
-    </Segment>
-  </ResponsiveContainer>
-);
+      </Segment>
+
+      <Segment style={{ padding: "0em" }} vertical>
+        <Grid celled="internally" columns="equal" stackable>
+          <Grid.Row textAlign="center">
+            <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
+              <Header as="h3" style={{ fontSize: "2em" }}>
+                "What a Company"
+              </Header>
+              <p style={{ fontSize: "1.33em" }}>
+                That is what they all say about us
+              </p>
+            </Grid.Column>
+            <Grid.Column style={{ paddingBottom: "5em", paddingTop: "5em" }}>
+              <Header as="h3" style={{ fontSize: "2em" }}>
+                "I shouldn't have gone with their competitor."
+              </Header>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+
+      <Segment style={{ padding: "8em 0em" }} vertical>
+        <Container text>
+          <Header as="h3" style={{ fontSize: "2em" }}>
+            Breaking The Grid, Grabs Your Attention
+          </Header>
+          <p style={{ fontSize: "1.33em" }}>
+            Instead of focusing on content creation and hard work, we have
+            learned how to master the art of doing nothing by providing massive
+            amounts of whitespace and generic content that can seem massive,
+            monolithic and worth your attention.
+          </p>
+          <Button as="a" size="large">
+            Read More
+          </Button>
+
+          <Divider
+            as="h4"
+            className="header"
+            horizontal
+            style={{ margin: "3em 0em", textTransform: "uppercase" }}
+          >
+            <a href="#">Case Studies</a>
+          </Divider>
+
+          <Header as="h3" style={{ fontSize: "2em" }}>
+            Did We Tell You About Our Bananas?
+          </Header>
+          <p style={{ fontSize: "1.33em" }}>
+            Yes I know you probably disregarded the earlier boasts as
+            non-sequitur filler content, but it's really true. It took years of
+            gene splicing and combinatory DNA research, but our bananas can
+            really dance.
+          </p>
+          <Button as="a" size="large">
+            I'm Still Quite Interested
+          </Button>
+        </Container>
+      </Segment>
+
+      <Segment inverted vertical style={{ padding: "5em 0em" }}>
+        <Container>
+          <Grid divided inverted stackable>
+            <Grid.Row>
+              <Grid.Column width={3}>
+                <Header inverted as="h4" content="About" />
+                <List link inverted>
+                  <List.Item as="a">Sitemap</List.Item>
+                </List>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Header inverted as="h4" content="Services" />
+                <List link inverted>
+                  <List.Item as="a">Banana Pre-Order</List.Item>
+                </List>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Container>
+      </Segment>
+    </ResponsiveContainer>
+  );
+};
 
 export default Home;
