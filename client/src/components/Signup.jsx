@@ -58,6 +58,9 @@ class Signup extends Component {
     }
 
     // Check confirmed password
+    if (password !== confirmedPassword) {
+      return;
+    }
 
     // Send sign up request
     await apis.signup({ email, password }).then(res => {

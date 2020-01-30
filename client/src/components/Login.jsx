@@ -55,15 +55,12 @@ class Login extends Component {
     await apis.login(email, password).then(res => {
       const error = res.data;
       // Login success
-      if (
-        error !== ERROR.EMAIL_NOT_EXISTED &&
-        error !== ERROR.INCORRECT_PASSWORD
-      ) {
+      if (error !== "email" && error !== "password") {
         this.props.auth();
         this.setState({ isLogin: true });
+      } else {
+        this.setState({ error });
       }
-
-      this.setState({ error });
     });
   };
 
