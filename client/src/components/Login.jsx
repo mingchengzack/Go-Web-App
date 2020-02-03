@@ -45,6 +45,13 @@ class Login extends Component {
     const { email, password } = this.state;
 
     // Check valid address and password
+    if (!email.includes("@")) {
+      return;
+    }
+
+    if (password.length < 8) {
+      return;
+    }
 
     // Empty email or empty password
     if (email === "" || password === "") {
