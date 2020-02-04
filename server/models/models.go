@@ -11,10 +11,12 @@ type User struct {
 
 // Class Struct
 type Class struct {
-	Name      string
-	StartTime string
-	EndTime   string
-	UserEmail string `json:"useremail,omitempty" bson:"useremail,omitempty"`
+	Name       string
+	Location   string
+	Instructor string
+	StartTime  string
+	EndTime    string
+	UserEmail  string `json:"useremail,omitempty" bson:"useremail,omitempty"`
 }
 
 // ToDoList Struct

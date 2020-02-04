@@ -10,6 +10,8 @@ import Homepage from "./components/Home";
 import User from "./components/User";
 
 function App() {
+  // REFACTOR!
+  // use local storage to check if its login in
   const [isLogin, setLogin] = useState(false);
 
   // Authentication handle
